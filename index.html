@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="shortcut icon" type="image/x-icon" href="image/icons8_happy_50px.png">
+    <title>Magical</title>
+    <style>
+        
+        /* Add background color to the body */
+        body {
+            background-image: url('https://wallpapercave.com/wp/wp5183571.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            height: 100vh; 
+        }
+    
+        /* CSS for the container that holds the columns */
+        #container {
+            margin-top: 200px;
+            display: flex;
+            justify-content: center;
+        }
+        /* CSS for the columns */
+        #inputColumn, #outputColumn1, #outputColumn3, #outputColumn4 {
+            width: 300px;
+            float: left;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            height: 500px;
+        }
+    
+        /* CSS for the textareas */
+        #inputList, #outputList1, #outputList3, #outputList4 {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            font-size: 14px;
+            height: 400px;
+        }
+    
+        /* CSS for the action buttons */
+        .actionButton {
+            margin-top: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+    
+        .actionButton:hover {
+            background-color: #45a049;
+        }
+    
+        /* CSS for the columns containing extracted strings */
+        #outputColumn1, #outputColumn3, #outputColumn4 {
+            border-left: 1px solid #ccc;
+        }
+    
+        /* CSS for the extracted strings */
+        .extractedString {
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 3px;
+        }
+    
+        /* CSS for the strong elements */
+        strong {
+            color: #555;
+        }
+    
+        /* CSS for the paragraph elements */
+        p {
+            margin: 0;
+        }
+    </style>
+    
+</head>
+<body>
+    <div id="container">
+        <div id="inputColumn">
+            <textarea id="inputList" placeholder="Dán danh sách chuỗi vào đây"></textarea>
+            <button class="actionButton" onclick="extractStrings()">Tách chuỗi</button>
+        </div>
+        <div id="outputColumn1">
+            <p><strong>Chuỗi đã tách:</strong></p>
+            <div id="outputList1"></div>
+        </div>
+        <div id="outputColumn2">
+            <div id="outputList2"></div>
+        </div>
+        <div id="outputColumn3">
+            <textarea id="outputList3" placeholder="Dán danh sách chuỗi vào đây"></textarea>
+            <button class="actionButton" onclick="joinStrings()">Chuyển thành chuỗi</button>
+        </div>
+        <div id="outputColumn4">
+            <p><strong>Chuỗi sau khi ghép:</strong></p>
+            <div id="outputList4"></div>
+        </div>
+    </div>
+
+    <script>
+function extractStrings() {
+            // Lấy nội dung từ textarea và sử dụng regular expression để trích xuất các chuỗi trong thẻ <string>
+            const inputList = document.getElementById('inputList').value;
+            const regex = /<string[^>]*>([^<]*)<\/string>/g;
+            const matches = inputList.matchAll(regex);
+
+            // Tạo một mảng chứa các chuỗi trích xuất được
+            const extractedStrings = [];
+            for (const match of matches) {
+                extractedStrings.push(match[1]);
+            }
+
+            // Hiển thị danh sách các chuỗi đã tách vào cột thứ nhất
+            const outputList1 = document.getElementById('outputList1');
+            outputList1.innerHTML = ''; // Xóa nội dung cũ (nếu có)
+            extractedStrings.forEach((str) => {
+                const paragraph = document.createElement('p');
+                paragraph.textContent = str;
+                paragraph.classList.add('extractedString');
+                outputList1.appendChild(paragraph);
+            });
+        }
+
+        function joinStrings() {
+            // Lấy nội dung từ textarea và tách thành danh sách chuỗi
+            const inputList3 = document.getElementById('outputList3').value;
+            const separatedStrings = inputList3.split('\n').filter(str => str.trim() !== '');
+
+            // Lấy chuỗi từ cột thứ hai
+            const secondColumnString = document.getElementById('outputList2').textContent.trim();
+
+            // Ghép danh sách chuỗi từ cột thứ nhất với chuỗi từ cột thứ ba
+            const combinedStrings = [];
+            for (let i = 0; i < separatedStrings.length; i++) {
+                const combinedString = `<string name="${secondColumnString}">${separatedStrings[i]}</string>`;
+                combinedStrings.push(combinedString);
+            }
+
+            // Hiển thị chuỗi đã ghép vào cột thứ tư
+            const outputList4 = document.getElementById('outputList4');
+            outputList4.innerHTML = ''; // Xóa nội dung cũ (nếu có)
+            combinedStrings.forEach((str) => {
+                const paragraph = document.createElement('p');
+                paragraph.textContent = str;
+                paragraph.classList.add('extractedString');
+                outputList4.appendChild(paragraph);
+            });
+        }
+    </script>
+</body>
+</html>
