@@ -94,10 +94,13 @@
         <div id="inputColumn">
             <textarea id="inputList" placeholder="Dán danh sách chuỗi vào đây"></textarea>
             <button class="actionButton" onclick="extractStrings()">Tách chuỗi</button>
+            <button class="actionButton" style="background-color: red;" onclick="Delete()">Xóa</button>
         </div>
         <div id="outputColumn1">
             <p><strong>Chuỗi đã tách:</strong></p>
             <div id="outputList1"></div>
+            <button class="actionButton" onclick="CopyToClipboard('outputList1')">Copy</button>
+
         </div>
         <div id="outputColumn2">
             <div id="outputList2"></div>
@@ -105,10 +108,12 @@
         <div id="outputColumn3">
             <textarea id="outputList3" placeholder="Dán danh sách chuỗi vào đây"></textarea>
             <button class="actionButton" onclick="joinStrings()">Chuyển thành chuỗi</button>
+            <button class="actionButton" style="background-color: red;" onclick="Delete1()">Xóa</button>
         </div>
         <div id="outputColumn4">
             <p><strong>Chuỗi sau khi ghép:</strong></p>
             <div id="outputList4"></div>
+            <button class="actionButton" onclick="CopyToClipboard('outputList4')">Copy</button>
         </div>
     </div>
 
@@ -136,13 +141,14 @@ function extractStrings() {
             });
         }
 
+
         function joinStrings() {
             // Lấy nội dung từ textarea và tách thành danh sách chuỗi
             const inputList3 = document.getElementById('outputList3').value;
             const separatedStrings = inputList3.split('\n').filter(str => str.trim() !== '');
 
             // Lấy chuỗi từ cột thứ hai
-            const secondColumnString = document.getElementById('outputList2').textContent.trim();
+            const secondColumnString = document.getElementById('outputList1').textContent.trim();
 
             // Ghép danh sách chuỗi từ cột thứ nhất với chuỗi từ cột thứ ba
             const combinedStrings = [];
@@ -161,6 +167,26 @@ function extractStrings() {
                 outputList4.appendChild(paragraph);
             });
         }
+    function CopyToClipboard(id)
+{
+var r = document.createRange();
+r.selectNode(document.getElementById(id));
+window.getSelection().removeAllRanges();
+window.getSelection().addRange(r);
+document.execCommand('copy');
+window.getSelection().removeAllRanges();
+}
+
+function Delete(){
+    var elem = document.getElementById("inputList");
+  elem.value = "";
+
+}
+function Delete1(){
+    var elem = document.getElementById("outputList3");
+  elem.value = "";
+
+}
     </script>
 </body>
 </html>
